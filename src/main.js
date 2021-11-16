@@ -28,12 +28,19 @@ async function parseJacocoXml(options) {
 export async function createBadge(options) {
     let ratio = await parseRatio(options);
     let percentage = Math.floor(ratio * 100);
-    console.log(ratio * 100);
+    if (options.outputFormat === 'text') {
+        console.log(percentage + '%');
+        return true;
+    }
 
     const sharp = require('sharp');
     var fs = require('fs').promises;
     const template = (await fs.readFile(options.template)).toString();
     let tmp = template.replace(/\>\d+\%/g, '>' + percentage + '%');
+    if (options.outputFormat === 'svg') {
+        await fs.writeFile(options.output, tmp);
+        return true;
+    }
     await sharp(Buffer.from(tmp)).png().toFile(options.output);
     return true;
 }

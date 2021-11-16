@@ -7,6 +7,7 @@ function parseArgumentsIntoOptions(rawArgs) {
             '--format': String,
             '--metrics': String,
             '--output': String,
+            '--output-format': String,
             '--template': String,
             '-f': '--format',
             '-m': '--metrics',
@@ -19,6 +20,7 @@ function parseArgumentsIntoOptions(rawArgs) {
         format: args['--format'],
         metrics: args['--metrics'] || 'line',
         output: args['--output'] || 'coverage.png',
+        outputFormat: args['--output-format'] || 'png',
         template: args['--template'] || __dirname + '/../res/coverage.svg',
         file: args._[0],
     };
