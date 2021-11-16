@@ -1,5 +1,6 @@
 {
-  "name": "coverage-badge",
+  "name": "coverage-badge-cli",
+  "version": "1.0.0",
   "description": "create coverage badge from test coverage reports",
   "main": "src/index.js",
   "bin": {
@@ -9,10 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/sinkcup/coverage-badge.git"
-  },
+  "repository": "github:sinkcup/coverage-badge",
   "keywords": [
     "cli",
     "coverage",
