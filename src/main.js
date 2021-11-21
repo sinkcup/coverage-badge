@@ -1,6 +1,6 @@
-const fs = require('fs').promises;
-const xml2js = require('xml2js');
-const sharp = require('sharp');
+import { promises as fs } from 'fs';
+import xml2js from 'xml2js';
+import sharp from 'sharp';
 
 async function parseJacocoXml(options) {
   const data = await fs.readFile(options.file);
@@ -13,6 +13,7 @@ async function parseJacocoXml(options) {
         return counter.covered / (Number(counter.covered) + Number(counter.missed));
       }
     }
+    return 0;
   });
 }
 
@@ -25,14 +26,12 @@ async function parseRatio(options) {
   }
 }
 
-async function createBadge(options) {
+async function parsePercentage(options) {
   const ratio = await parseRatio(options);
-  const percentage = Math.floor(ratio * 100);
-  if (options.outputFormat === 'text') {
-    console.log(`${percentage}%`);
-    return true;
-  }
+  return Math.floor(ratio * 100);
+}
 
+async function createBadge(options, percentage) {
   const template = (await fs.readFile(options.template)).toString();
   const tmp = template.replace(/>\d+%/g, `>${percentage}%`);
   if (options.outputFormat === 'svg') {
@@ -43,4 +42,4 @@ async function createBadge(options) {
   return true;
 }
 
-export { createBadge };
+export { createBadge, parsePercentage, parseRatio };

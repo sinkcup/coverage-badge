@@ -1,7 +1,9 @@
 import arg from 'arg';
-import { createBadge } from './main';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { createBadge, parsePercentage } from './main';
 
-function parseArgumentsIntoOptions() {
+async function parseArgumentsIntoOptions() {
   const args = arg(
     {
       '--format': String,
@@ -21,19 +23,28 @@ function parseArgumentsIntoOptions() {
     metrics: args['--metrics'] || 'line',
     output: args['--output'] || 'coverage.png',
     outputFormat: args['--output-format'] || 'png',
-    template: args['--template'] || `${__dirname}/../res/coverage.svg`,
+    template: args['--template'] || `${dirname(fileURLToPath(import.meta.url))}/../res/coverage.svg`,
     file: args._[0],
   };
 }
 
+/* eslint-disable no-console */
 async function cli(args) {
   try {
-    const options = parseArgumentsIntoOptions(args);
-    await createBadge(options);
+    const options = await parseArgumentsIntoOptions(args);
+
+    const percentage = await parsePercentage(options);
+    if (options.outputFormat === 'text') {
+      console.log(`${percentage}%`);
+      return true;
+    }
+    await createBadge(options, percentage);
   } catch (err) {
     console.error(err.message);
     process.exit(1);
   }
+
+  return 0;
 }
 
-export { cli };
+export default cli;

@@ -1,12 +1,12 @@
 {
   "name": "test-coverage-badge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "create coverage badge from test coverage reports",
   "main": "src/index.js",
   "bin": {
-    "@sinkcup/coverage-badge": "bin/coverage-badge",
-    "coverage-badge": "bin/coverage-badge"
+    "coverage-badge": "bin/coverage-badge.js"
   },
+  "type": "module",
   "scripts": {
     "lint": "eslint src/",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,9 +21,11 @@
   ],
   "author": "sink",
   "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
   "dependencies": {
     "arg": "^5.0.1",
-    "esm": "^3.2.25",
     "inquirer": "^8.2.0",
     "sharp": "^0.29.3",
     "xml2js": "^0.4.23"
