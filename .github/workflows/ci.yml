@@ -27,3 +27,11 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      - name: Test 
+        run: npm run test
+
+      - name: codecov
+        uses: codecov/codecov-action@v2
+        with:
+          files: coverage/clover.xml
