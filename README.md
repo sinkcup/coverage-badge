@@ -1,4 +1,4 @@
-# coverage badge
+# test coverage badge
 [![CI](https://github.com/sinkcup/coverage-badge/actions/workflows/ci.yml/badge.svg)](https://github.com/sinkcup/coverage-badge/actions/workflows/ci.yml)
 
 create coverage badge by parsing test coverage reports.
@@ -8,7 +8,7 @@ create coverage badge by parsing test coverage reports.
 ### png(default)
 
 ```shell
-coverage-badge --format jacoco-xml ./build/reports/jacoco/test/jacocoTestReport.xml
+npx test-coverage-badge --format jacoco-xml ./build/reports/jacoco/test/jacocoTestReport.xml
 ```
 
 output:
@@ -18,7 +18,7 @@ output:
 ### text
 
 ```shell
-coverage-badge --format jacoco-xml \
+npx test-coverage-badge --format jacoco-xml \
   --output-format text \
   ./build/reports/jacoco/test/jacocoTestReport.xml
 ```

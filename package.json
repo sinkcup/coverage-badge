@@ -4,7 +4,7 @@
   "description": "create coverage badge from test coverage reports",
   "main": "src/index.js",
   "bin": {
-    "coverage-badge": "bin/coverage-badge.js"
+    "test-coverage-badge": "bin/coverage-badge.js"
   },
   "type": "module",
   "scripts": {
