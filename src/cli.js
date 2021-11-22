@@ -1,37 +1,47 @@
-import arg from 'arg';
+import yargs from 'yargs';
+import fs from 'fs/promises';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { createBadge, parsePercentage } from './main';
 
-async function parseArgumentsIntoOptions() {
-  const args = arg(
-    {
-      '--format': String,
-      '--metrics': String,
-      '--output': String,
-      '--output-format': String,
-      '--template': String,
-      '-f': '--format',
-      '-m': '--metrics',
-      '-o': '--output',
-      '-t': '--template',
-    },
-  );
-  if (!args['--format']) throw new Error('missing required argument: --format');
-  return {
-    format: args['--format'],
-    metrics: args['--metrics'] || 'line',
-    output: args['--output'] || 'coverage.png',
-    outputFormat: args['--output-format'] || 'png',
-    template: args['--template'] || `${dirname(fileURLToPath(import.meta.url))}/../res/coverage.svg`,
-    file: args._[0],
-  };
+async function parseArgs(argv) {
+  const options = yargs(argv)
+    .usage('Usage: $0 [OPTION]... FILE')
+    .option('format', {
+      alias: 'f',
+      description: 'input format',
+      demandOption: true,
+    })
+    .option('metrics', {
+      alias: 'm',
+      description: 'line, method or class',
+      default: 'line',
+    })
+    .option('output', {
+      alias: 'o',
+      description: 'output filename',
+      default: 'coverage.png',
+    })
+    .option('output-format', {
+      description: 'text, svg or png',
+      default: 'png',
+    })
+    .option('template', {
+      alias: 't',
+      description: 'svg template filename',
+      default: await fs.realpath(`${dirname(fileURLToPath(import.meta.url))}/../res/coverage.svg`),
+    })
+    .parse();
+  const file = options._[0];
+  options.file = file;
+  return options;
 }
 
 /* eslint-disable no-console */
-async function cli(args) {
+async function cli() {
   try {
-    const options = await parseArgumentsIntoOptions(args);
+    const argv = process.argv.slice(2);
+    const options = await parseArgs(argv);
 
     const percentage = await parsePercentage(options);
     if (options.outputFormat === 'text') {
@@ -47,4 +57,4 @@ async function cli(args) {
   return 0;
 }
 
-export default cli;
+export { cli, parseArgs };
