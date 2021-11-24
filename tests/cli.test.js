@@ -40,3 +40,17 @@ test('parse all args', async () => {
   expect(options.outputFormat).toBe('svg');
   expect(options.template).toBe('/tmp/coverage.svg');
 });
+
+test('parse output-format svg', async () => {
+  const argv = [
+    '--format',
+    'clover',
+    'tests/data/clover.xml',
+    '--output-format',
+    'svg',
+  ];
+
+  const options = await parseArgs(argv);
+  expect(options.output).toBe('coverage.svg');
+  expect(options.outputFormat).toBe('svg');
+});

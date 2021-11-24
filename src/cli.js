@@ -20,7 +20,6 @@ async function parseArgs(argv) {
     .option('output', {
       alias: 'o',
       description: 'output filename',
-      default: 'coverage.png',
     })
     .option('output-format', {
       description: 'text, svg or png',
@@ -34,6 +33,9 @@ async function parseArgs(argv) {
     .parse();
   const file = options._[0];
   options.file = file;
+  if (!options.output) {
+    options.output = `coverage.${options.outputFormat}`;
+  }
   return options;
 }
 

@@ -36,6 +36,8 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jest": "^25.2.4",
+    "faker": "^5.5.3",
+    "hasha": "^5.2.2",
     "jest": "^27.3.1"
   }
 }
