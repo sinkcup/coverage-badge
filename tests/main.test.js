@@ -62,6 +62,19 @@ test('parse clover class coverage', async () => {
     await parsePercentage(options);
   } catch (e) {
     expect(e).toBeInstanceOf(Error);
-    expect(e.message).toBe('class: Unsupported metric');
+    expect(e.message).toBe("unsupported metric 'class'");
+  }
+});
+
+test('parse unknown format', async () => {
+  const options = {
+    format: 'foo',
+    file: `${dirname(fileURLToPath(import.meta.url))}/data/clover.xml`,
+  };
+  try {
+    await parsePercentage(options);
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+    expect(e.message).toBe("unknown format 'foo'");
   }
 });
