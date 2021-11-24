@@ -1,6 +1,10 @@
+import os from 'os';
+import faker from 'faker';
+import fs from 'fs/promises';
+import hasha from 'hasha';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { parsePercentage } from '../src/main';
+import { createBadge, parsePercentage } from '../src/main';
 
 test('parse jacoco xml line coverage', async () => {
   const options = {
@@ -77,4 +81,28 @@ test('parse unknown format', async () => {
     expect(e).toBeInstanceOf(Error);
     expect(e.message).toBe("unknown format 'foo'");
   }
+});
+
+test('create badge png', async () => {
+  const output = `${os.tmpdir()}/${faker.system.fileName()}.png`;
+  const options = {
+    output,
+    outputFormat: 'png',
+    template: `${dirname(fileURLToPath(import.meta.url))}/../res/coverage.svg`,
+  };
+  await createBadge(options, 75);
+  const sha256 = await hasha.fromFile(output, { algorithm: 'sha256' });
+  expect(sha256).toBe('4da4343b5699737e8b91515c85c375bd6feab77eedd5a370c611e4201c52a7cb');
+});
+
+test('create badge svg', async () => {
+  const output = `${os.tmpdir()}/${faker.system.fileName()}.svg`;
+  const options = {
+    output,
+    outputFormat: 'svg',
+    template: await fs.realpath(`${dirname(fileURLToPath(import.meta.url))}/../res/coverage.svg`),
+  };
+  await createBadge(options, 75);
+  const sha256 = await hasha.fromFile(output, { algorithm: 'sha256' });
+  expect(sha256).toBe('f70961fc021eb941364030dbd15045dc2a9f25b6e5e0018b9d491d96e7600bfc');
 });
