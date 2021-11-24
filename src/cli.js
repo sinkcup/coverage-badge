@@ -50,7 +50,7 @@ async function cli() {
     }
     await createBadge(options, percentage);
   } catch (err) {
-    console.error(err.message);
+    console.error(`test-coverage-badge: ${err.message}`);
     process.exit(1);
   }
 

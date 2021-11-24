@@ -31,7 +31,7 @@ async function parseClover(options) {
         return metrics.coveredmethods / metrics.methods;
       default:
         // TODO there is no `covered class` metrics in clover
-        throw new Error(`${options.metrics}: Unsupported metric`);
+        throw new Error(`unsupported metric '${options.metrics}'`);
     }
   });
 }
@@ -46,7 +46,7 @@ async function parsePercentage(options) {
       ratio = await parseClover(options);
       break;
     default:
-      throw new Error(`unknown format: ${options.format}`);
+      throw new Error(`unknown format '${options.format}'`);
   }
   return Math.floor(ratio * 100);
 }
