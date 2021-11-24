@@ -41,3 +41,27 @@ test('parse clover line coverage', async () => {
   const result = await parsePercentage(options);
   expect(result).toBe(64);
 });
+
+test('parse clover method coverage', async () => {
+  const options = {
+    format: 'clover',
+    metrics: 'method',
+    file: `${dirname(fileURLToPath(import.meta.url))}/data/clover.xml`,
+  };
+  const result = await parsePercentage(options);
+  expect(result).toBe(50);
+});
+
+test('parse clover class coverage', async () => {
+  const options = {
+    format: 'clover',
+    metrics: 'class',
+    file: `${dirname(fileURLToPath(import.meta.url))}/data/clover.xml`,
+  };
+  try {
+    await parsePercentage(options);
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+    expect(e.message).toBe('class: Unsupported metric');
+  }
+});

@@ -24,7 +24,15 @@ async function parseClover(options) {
     const { coverage } = result;
     const { project } = coverage;
     const metrics = project[0].metrics[0].$;
-    return metrics.coveredstatements / metrics.statements;
+    switch (options.metrics) {
+      case 'line':
+        return metrics.coveredstatements / metrics.statements;
+      case 'method':
+        return metrics.coveredmethods / metrics.methods;
+      default:
+        // TODO there is no `covered class` metrics in clover
+        throw new Error(`${options.metrics}: Unsupported metric`);
+    }
   });
 }
 
