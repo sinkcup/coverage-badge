@@ -13,7 +13,7 @@ async function parseJacocoXml(options) {
         return counter.covered / (Number(counter.covered) + Number(counter.missed));
       }
     }
-    return 0;
+    throw new Error(`unsupported metric '${options.metrics}'`);
   });
 }
 

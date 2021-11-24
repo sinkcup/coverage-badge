@@ -36,6 +36,40 @@ test('parse jacoco xml class coverage', async () => {
   expect(result).toBe(100);
 });
 
+test('parse jacoco xml instruction coverage', async () => {
+  const options = {
+    format: 'jacoco-xml',
+    metrics: 'instruction',
+    file: `${dirname(fileURLToPath(import.meta.url))}/data/jacocoTestReport.xml`,
+  };
+  const result = await parsePercentage(options);
+  expect(result).toBe(61);
+});
+
+test('parse jacoco xml complexity coverage', async () => {
+  const options = {
+    format: 'jacoco-xml',
+    metrics: 'complexity',
+    file: `${dirname(fileURLToPath(import.meta.url))}/data/jacocoTestReport.xml`,
+  };
+  const result = await parsePercentage(options);
+  expect(result).toBe(75);
+});
+
+test('parse jacoco xml unsupported coverage', async () => {
+  const options = {
+    format: 'jacoco-xml',
+    metrics: 'foo',
+    file: `${dirname(fileURLToPath(import.meta.url))}/data/jacocoTestReport.xml`,
+  };
+  try {
+    await parsePercentage(options);
+  } catch (e) {
+    expect(e).toBeInstanceOf(Error);
+    expect(e.message).toBe("unsupported metric 'foo'");
+  }
+});
+
 test('parse clover line coverage', async () => {
   const options = {
     format: 'clover',
